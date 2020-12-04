@@ -2,6 +2,8 @@ import React from 'react'
 
 import '../styles/AllMangas.css'
 
+import { Link } from 'react-router-dom';
+
 class AllMangas extends React.Component {
 
   state = {
@@ -22,9 +24,9 @@ class AllMangas extends React.Component {
   }
 
   renderMangas = ()=>{
-    return this.state.mangas.map((manga)=>{
+    return this.state.mangas.map((manga, index)=>{
       return(
-        <div>
+        <Link to={`/all-mangas/${manga.mal_id}`} key={index}>
           <div className="manga-container">
             <img src={manga.image_url} alt={manga.title}/>
             <div className="title-and-score">
@@ -32,7 +34,7 @@ class AllMangas extends React.Component {
               <p>{manga.score}</p>            
             </div>
           </div>
-        </div>
+        </Link>
       )
     })
   }
