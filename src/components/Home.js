@@ -4,7 +4,8 @@ const Home = (props)=>{
   return(
     <div>
       <h2>Home</h2>
-      <button onClick={()=>props.logOut()}>Log Out</button>
+      <h3>{props.isLogged.username && `Welcome, ${props.isLogged.username}`}</h3>
+      {props.isLogged.username && <button onClick={()=>props.logOut()}>Log Out</button>}
     </div>
   )
 }

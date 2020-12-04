@@ -7,16 +7,17 @@ import Home from './components/Home';
 import AllMangas from './components/AllMangas';
 import IndividualManga from './components/IndividualManga';
 import LogIn from './components/LogIn';
+import Profile from './components/Profile';
 
 //Dependencias
-import { Link, Route } from 'react-router-dom';
+import { Link, Route, Redirect } from 'react-router-dom';
 import UserService from './services/UserService';
 
 class App extends React.Component {
 	state = {
 		isLogged: {},
 		newUser: { username: '', password: '' },
-		loggingUser: { username: '', password: '' }
+    loggingUser: { username: '', password: '' },
 	};
 
 	service = new UserService();
@@ -43,7 +44,7 @@ class App extends React.Component {
 		this.service
 			.login(this.state.loggingUser.username, this.state.loggingUser.password)
 			.then(() => {
-        this.checkIfLoggedIn()
+				this.checkIfLoggedIn()
 			})
 			.catch((err) => {
 				console.log('Sorry something went wrong on submit.', err);
@@ -57,7 +58,7 @@ class App extends React.Component {
 	checkIfLoggedIn = () => {
     this.service.loggedin()
     .then((result)=>{
-      console.log(result)
+      this.setState({isLogged: result})
     })
   };
   
@@ -83,21 +84,28 @@ class App extends React.Component {
 				<br />
 				<Link to="/all-mangas">All Mangas</Link>
 				<br />
-				<Link to="/signup">Sign Up</Link>
+				{!this.state.isLogged.username && <Link to="/signup">Sign Up</Link>}
 				<br />
-				<Link to="/login">Log In</Link>
+				{!this.state.isLogged.username && <Link to="/login">Log In</Link>}
+				<br />
+				{this.state.isLogged.username && <Link to="/profile">Profile</Link>}
+				
 
-				<Route exact path="/" render={()=><Home logOut={this.logOut}/>} />
+
+				<Route exact path="/" render={()=><Home logOut={this.logOut} isLogged={this.state.isLogged} />} />
 				<Route exact path="/all-mangas" component={AllMangas} />
-				<Route path="/all-mangas/:id" component={IndividualManga} />
+				{/* <Route path="/all-mangas/:id" render={()=><Individualmanga} /> */}
+				<Route path='/all-mangas/:id' render={(props) => {
+          return(
+            <IndividualManga {...props} isLogged={this.state.isLogged}/>
+          )
+        }} />
 				<Route
 					path="/signup"
 					render={() => (
-						<SignUp
-							submitSignUp={this.submitSignUp}
-							newUser={this.state.newUser}
-							changeHandlerSignUp={this.changeHandlerSignUp}
-						/>
+						!this.state.isLogged.username
+							? <SignUp submitSignUp={this.submitSignUp} newUser={this.state.newUser} changeHandlerSignUp={this.changeHandlerSignUp}/>
+							: <Redirect to='/' />
 					)}
 				/>
 				<Route
@@ -110,6 +118,8 @@ class App extends React.Component {
 						/>
 					)}
 				/>
+				{this.state.isLogged._id && <Route path="/profile" render={()=><Profile isLogged={this.state.isLogged}/>}/>}
+				
 			</div>
 		);
 	}
