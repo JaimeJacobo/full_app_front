@@ -19,16 +19,10 @@ class UserService {
     .then(response => response.data)
   }
 
-
   login = (username, password) => {
     return this.service.post("/login", {username, password})
     .then(response => response.data)
   }
-
-  // getUser = () => {
-  //   return this.service.post("/getUser")
-  //   .then(response => response.data)
-  // }
 
   loggedin = () =>{
     return this.service.get("/loggedin")
