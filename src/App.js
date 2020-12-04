@@ -1,6 +1,13 @@
 import React from 'react'
 import './App.css';
 
+//Componentes
+import CreateUserForm from './components/CreateUserForm'
+import Home from './components/Home'
+import AllMangas from './components/AllMangas'
+//Dependencias
+import { Link, Route } from 'react-router-dom';
+
 class App extends React.Component {
 
   state = {
@@ -32,17 +39,12 @@ class App extends React.Component {
   render(){
     return (
       <div className="App">
-        <form onSubmit={this.submitForm}>
+        <Link to='/'>Home Page</Link>
+        <br />
+        <Link to='/all-mangas'>All Mangas</Link>
 
-          <label htmlFor="username">Username: </label>
-          <input type="text" name="username" value={this.state.user.username} onChange={(event)=>this.changeHandler(event.target)}/>
-
-          <label htmlFor="password">Password: </label>
-          <input type="password" name="password" value={this.state.user.password} onChange={(event)=>this.changeHandler(event.target)}/>
-
-          <button type="submit">Crear Usuario</button>
-
-        </form>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/all-mangas" component={AllMangas} />
       </div>
     );    
   }
@@ -57,3 +59,12 @@ export default App;
 //Autentificación (passport)
 //Deployment
 //Consultas a APIs externas
+
+
+
+
+// <CreateUserForm 
+ // submitForm={this.submitForm}
+ // user={this.state.user}
+ // changeHandler={this.changeHandler}
+///> 
