@@ -30,7 +30,7 @@ class App extends React.Component {
 				console.log(result);
 			})
 			.catch((err) => {
-				console.log(err);
+				console.log(err.response);
 			});
 	};
 
@@ -47,7 +47,7 @@ class App extends React.Component {
 				this.checkIfLoggedIn()
 			})
 			.catch((err) => {
-				console.log('Sorry something went wrong on submit.', err);
+				console.log(err.response);
 			});
 	};
 
