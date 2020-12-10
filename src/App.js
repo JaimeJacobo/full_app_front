@@ -58,6 +58,7 @@ class App extends React.Component {
 	checkIfLoggedIn = () => {
     this.service.loggedin()
     .then((result)=>{
+			console.log('result', result)
       this.setState({isLogged: result})
     })
   };
