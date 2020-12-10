@@ -20,6 +20,7 @@ class UserService {
   }
 
   login = (username, password) => {
+    console.log('login de service')
     return this.service.post("/login", {username, password})
     .then(response => response.data)
   }
