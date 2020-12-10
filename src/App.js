@@ -43,7 +43,8 @@ class App extends React.Component {
 		event.preventDefault();
 		this.service
 			.login(this.state.loggingUser.username, this.state.loggingUser.password)
-			.then(() => {
+			.then((result) => {
+				console.log('result del login', result)
 				this.checkIfLoggedIn()
 			})
 			.catch((err) => {
