@@ -6,7 +6,7 @@ class MangaService {
 
   constructor() {
     let service = axios.create({
-      baseURL: "http://localhost:3000/",
+      baseURL: "https://prueba-mark-back.herokuapp.com/",
       withCredentials: true
     });
 
