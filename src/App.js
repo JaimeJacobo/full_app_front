@@ -45,7 +45,7 @@ class App extends React.Component {
 		this.service
 			.login(this.state.loggingUser.username, this.state.loggingUser.password)
 			.then((result) => {
-				this.checkIfLoggedIn();
+				// this.checkIfLoggedIn();
 				console.log('gusi');
 			})
 			.catch((err) => {
@@ -57,18 +57,18 @@ class App extends React.Component {
 		this.setState({ loggingUser: { ...this.state.loggingUser, [_eventTarget.name]: _eventTarget.value } });
 	};
 
-	checkIfLoggedIn = () => {
-		this.service.loggedin().then((result) => {
-			this.setState({ isLogged: result });
-		});
-	};
+	// checkIfLoggedIn = () => {
+	// 	this.service.loggedin().then((result) => {
+	// 		this.setState({ isLogged: result });
+	// 	});
+	// };
 
 	logOut = () => {
 		this.service
 			.logout()
 			.then((result) => {
 				console.log(result);
-				this.checkIfLoggedIn();
+				// this.checkIfLoggedIn();
 			})
 			.catch((err) => {
 				console.log(err);
@@ -76,7 +76,7 @@ class App extends React.Component {
 	};
 
 	componentDidMount() {
-		this.checkIfLoggedIn();
+		// this.checkIfLoggedIn();
 	}
 
 	render() {
