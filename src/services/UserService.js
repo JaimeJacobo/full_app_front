@@ -6,7 +6,7 @@ class UserService {
 
   constructor() {
     let service = axios.create({
-      baseURL: "http://88.3.13.99:3000/",
+      baseURL: "https://88.3.13.99:3000/",
       withCredentials: true
     });
 
