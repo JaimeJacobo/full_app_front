@@ -57,12 +57,16 @@ class App extends React.Component {
 		this.setState({ loggingUser: { ...this.state.loggingUser, [_eventTarget.name]: _eventTarget.value } });
 	};
 
-	
 	checkIfLoggedIn = () => {
-		console.log("Logged In?");
-		this.service.loggedin().then((result) => {
-			this.setState({ isLogged: result });
-		});
+		console.log('Logged In?');
+		this.service
+			.loggedin()
+			.then((result) => {
+				this.setState({ isLogged: result });
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	logOut = () => {
