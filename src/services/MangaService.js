@@ -6,7 +6,7 @@ class MangaService {
 
   constructor() {
     let service = axios.create({
-      baseURL: "http://localhost:3000/",
+      baseURL: "http://88.3.13.99:3000/",
       withCredentials: true
     });
 
