@@ -46,7 +46,7 @@ class App extends React.Component {
 			.login(this.state.loggingUser.username, this.state.loggingUser.password)
 			.then((result) => {
 				this.setState({isLogged: result})
-				this.checkIfLoggedIn();
+				// this.checkIfLoggedIn();
 				console.log('gusi');
 			})
 			.catch((err) => {
