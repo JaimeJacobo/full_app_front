@@ -62,10 +62,11 @@ class App extends React.Component {
 		this.service
 			.loggedin()
 			.then((result) => {
+				console.log(result);
 				this.setState({ isLogged: result });
 			})
 			.catch((err) => {
-				console.log(err);
+				this.setState({ isLogged: {} });
 			});
 	};
 
