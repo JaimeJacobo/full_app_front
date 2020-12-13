@@ -25,6 +25,7 @@ class App extends React.Component {
 
 	fetchUser() {
 		if (this.state.loggedInUser === null) {
+			console.log('entra aqui')
 			this.service
 				.loggedin()
 				.then((response) => {
