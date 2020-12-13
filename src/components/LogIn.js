@@ -21,7 +21,8 @@ class LogIn extends React.Component {
 					username: '',
 					password: ''
 				});
-				this.props.getUser(response);
+        this.props.getUser(response);
+        this.props.history.push('/profile')
 			})
 			.catch((err) => console.error(err));
 	};
