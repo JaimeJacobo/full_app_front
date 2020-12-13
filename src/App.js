@@ -14,105 +14,81 @@ import { Link, Route, Redirect } from 'react-router-dom';
 import UserService from './services/UserService';
 
 class App extends React.Component {
-	state = {
-		isLogged: {},
-		newUser: { username: '', password: '' },
-		loggingUser: { username: '', password: '' }
-	};
-
-	service = new UserService();
-
-	//SIGNUP CONFIG
-	submitSignUp = (event) => {
-		event.preventDefault();
-		this.service
-			.signup(this.state.newUser.username, this.state.newUser.password)
-			.then((result) => {
-				console.log(result);
-			})
-			.catch((err) => {
-				console.log(err.response);
-			});
-	};
-
-	changeHandlerSignUp = (_eventTarget) => {
-		this.setState({ newUser: { ...this.state.newUser, [_eventTarget.name]: _eventTarget.value } });
-	};
-
-	//LOGIN CONFIG
-	submitLogIn = (event) => {
-		event.preventDefault();
-		this.service
-			.login(this.state.loggingUser.username, this.state.loggingUser.password)
-			.then((result) => {
-				this.setState({isLogged: result})
-				// this.checkIfLoggedIn();
-				console.log('gusi');
-			})
-			.catch((err) => {
-				console.log(err.response);
-			});
-	};
-
-	changeHandlerLogIn = (_eventTarget) => {
-		this.setState({ loggingUser: { ...this.state.loggingUser, [_eventTarget.name]: _eventTarget.value } });
-	};
-
-	checkIfLoggedIn = () => {
-		console.log('Logged In?');
-		this.service
-			.loggedin()
-			.then((result) => {
-				console.log(result);
-				this.setState({ isLogged: result });
-			})
-			.catch((err) => {
-				this.setState({ isLogged: {} });
-			});
-	};
-
-	logOut = () => {
-		this.service
-			.logout()
-			.then((result) => {
-				console.log(result);
-				this.checkIfLoggedIn();
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
-
-	componentDidMount() {
-		this.checkIfLoggedIn();
+	constructor(props) {
+		super(props);
+		this.state = {
+			loggedInUser: null,
+			publicProfileId: ''
+		};
+		this.service = new UserService();
 	}
 
+	fetchUser() {
+		if (this.state.loggedInUser === null) {
+			this.service
+				.loggedin()
+				.then((response) => {
+					this.setState({
+						loggedInUser: response
+					});
+				})
+				.catch((err) => {
+					this.setState({
+						loggedInUser: false
+					});
+				});
+		}
+	}
+
+	getTheUser = (userObj) => {
+		this.setState({
+			loggedInUser: userObj
+		});
+	};
+
+	getProfilePublicId = (id) => {
+		this.setState({
+			publicProfileId: id
+		});
+	};
+	changeAvatar = (avatarUrl) => {
+		const copyUser = { ...this.state.loggedInUser, imgPath: avatarUrl };
+		this.setState({
+			loggedInUser: copyUser
+		});
+	};
+	changeUserInfo = (userInfo) => {
+		const copyUser = { ...this.state.loggedInUser, name: userInfo.name, lastName: userInfo.lastName };
+		this.setState({ loggedInUser: copyUser });
+	};
+
 	render() {
+		this.fetchUser()
 		return (
 			<div className="App">
 				<Link to="/">Home Page</Link>
 				<br />
 				<Link to="/all-mangas">All Mangas</Link>
 				<br />
-				{!this.state.isLogged.username && <Link to="/signup">Sign Up</Link>}
+				{!this.state.loggedInUser && <Link to="/signup">Sign Up</Link>}
 				<br />
-				{!this.state.isLogged.username && <Link to="/login">Log In</Link>}
+				{!this.state.loggedInUser && <Link to="/login">Log In</Link>}
 				<br />
-				{this.state.isLogged.username && <Link to="/profile">Profile</Link>}
+				{this.state.loggedInUser && <Link to="/profile">Profile</Link>}
 
-				<Route exact path="/" render={() => <Home logOut={this.logOut} isLogged={this.state.isLogged} />} />
+				<Route exact path="/" render={() => <Home isLogged={this.state.loggedInUser} />} />
 				<Route exact path="/all-mangas" component={AllMangas} />
 				{/* <Route path="/all-mangas/:id" render={()=><Individualmanga} /> */}
 				<Route
 					path="/all-mangas/:id"
 					render={(props) => {
-						return <IndividualManga {...props} isLogged={this.state.isLogged} />;
+						return <IndividualManga {...props} loggedInUser={this.state.loggedInUser} />;
 					}}
 				/>
 				<Route
 					path="/signup"
 					render={() =>
-						!this.state.isLogged.username ? (
+						!this.state.loggedInUser ? (
 							<SignUp
 								submitSignUp={this.submitSignUp}
 								newUser={this.state.newUser}
@@ -125,19 +101,11 @@ class App extends React.Component {
 				<Route
 					path="/login"
 					render={() =>
-						!this.state.isLogged.username ? (
-							<LogIn
-								submitLogIn={this.submitLogIn}
-								loggingUser={this.state.loggingUser}
-								changeHandlerLogIn={this.changeHandlerLogIn}
-							/>
-						) : (
-							<Redirect to="/" />
-						)}
+						!this.state.loggedInUser ? <LogIn getUser={this.getTheUser} /> : <Redirect to="/" />}
 				/>
-				{this.state.isLogged._id && (
-					<Route path="/profile" render={() => <Profile isLogged={this.state.isLogged} />} />
-				)}
+				{/* {this.state.loggedInUser && (
+					<Route path="/profile" render={() => <Profile loggedInUser={this.state.loggedInUser} />} />
+				)} */}
 			</div>
 		);
 	}

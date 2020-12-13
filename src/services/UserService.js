@@ -6,7 +6,7 @@ class UserService {
 
   constructor() {
     let service = axios.create({
-      baseURL: "https://mangas-kawaii-back.herokuapp.com",
+      baseURL: "https://mangas-kawaii-back.herokuapp.com/",
       withCredentials: true
     });
 

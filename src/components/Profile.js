@@ -15,7 +15,7 @@ class Profile extends React.Component{
   service = new MangaService()
 
   componentDidMount(){
-    this.service.getUser(this.props.isLogged._id)
+    this.service.getUser(this.props.loggedInUser._id)
     .then((response)=>{
       this.setState({leidos: [...response.leidos], leyendo: [...response.leyendo], porLeer: [...response.porLeer]})
       this.getFullLeidos()
@@ -105,7 +105,7 @@ class Profile extends React.Component{
   render(){
     return(
       <div>
-        <h2>Welcome, {this.props.isLogged.username}</h2>
+        <h2>Welcome, {this.props.loggedInUser}</h2>
         {this.state.leidosFull.length > 0 && this.renderLeidos()}
         {this.state.leyendoFull.length > 0 && this.renderLeyendo()}
         {this.state.porLeerFull.length > 0 && this.renderPorLeer()}

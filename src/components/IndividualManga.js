@@ -13,7 +13,7 @@ class IndividualManga extends React.Component{
   service = new MangaService()
 
   addToLeidos = ()=>{
-    this.service.leidos(this.props.match.params.id, this.props.isLogged._id)
+    this.service.leidos(this.props.match.params.id, this.props.loggedInUser._id)
     .then((result) => {
       console.log(result);
     })
@@ -23,7 +23,7 @@ class IndividualManga extends React.Component{
   }
 
   addToLeyendo = ()=>{
-    this.service.leyendo(this.props.match.params.id, this.props.isLogged._id)
+    this.service.leyendo(this.props.match.params.id, this.props.loggedInUser._id)
     .then((result) => {
       console.log(result);
     })
@@ -33,7 +33,7 @@ class IndividualManga extends React.Component{
   }
 
   addToPorLeer = ()=>{
-    this.service.porLeer(this.props.match.params.id, this.props.isLogged._id)
+    this.service.porLeer(this.props.match.params.id, this.props.loggedInUser._id)
     .then((result) => {
       console.log(result);
     })
@@ -43,7 +43,7 @@ class IndividualManga extends React.Component{
   }
 
   renderButtons = ()=>{
-    if(this.props.isLogged.username){
+    if(this.props.loggedInUser){
       return(
         <div>
           <button onClick={()=>this.addToLeidos()}>Añadir a LEIDOS</button>

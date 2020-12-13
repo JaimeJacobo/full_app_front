@@ -1,33 +1,62 @@
-import React from 'react'
+import React from 'react';
+import Service from '../services/UserService';
 
-const LogIn = (props)=>{
-  // const {submitLogIn, loggingUser, changeHandlerLogIn} = props
-  return(
-    <div>
-      <h2>Log In</h2>
-      <form onSubmit={props.submitLogIn}>
+class LogIn extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			username: '',
+			password: ''
+		};
+		this.service = new Service();
+	}
 
-        <label htmlFor="username">Username: </label>
-        <input 
-          type="text" 
-          name="username" 
-          value={props.loggingUser.username} 
-          onChange={(event)=>props.changeHandlerLogIn(event.target)}
-        />
+	handleFormSubmit = (event) => {
+		event.preventDefault();
 
-        <label htmlFor="password">Password: </label>
-        <input 
-          type="password" 
-          name="password" 
-          value={props.loggingUser.password} 
-          onChange={(event)=>props.changeHandlerLogIn(event.target)}
-        />
+		this.service
+			.login(this.state.username, this.state.password)
+			.then((response) => {
+				this.setState({
+					username: '',
+					password: ''
+				});
+				this.props.getUser(response);
+			})
+			.catch((err) => console.error(err));
+	};
 
-        <button type="submit">Log In</button>
+	handleChange = (event) => {
+		const { name, value } = event.target;
+		this.setState({ [name]: value });
+	};
 
-      </form>
-    </div>
-  )
+	render() {
+		return (
+			<div>
+				<h2>Log In</h2>
+				<form onSubmit={this.handleFormSubmit}>
+					<label htmlFor="username">Username: </label>
+					<input
+						type="text"
+						name="username"
+						value={this.state.username}
+						onChange={(event) => this.handleChange(event)}
+					/>
+
+					<label htmlFor="password">Password: </label>
+					<input
+						type="password"
+						name="password"
+						value={this.state.password}
+						onChange={(event) => this.handleChange(event)}
+					/>
+
+					<button type="submit">Log In</button>
+				</form>
+			</div>
+		);
+	}
 }
 
-export default LogIn
+export default LogIn;
